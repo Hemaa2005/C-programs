@@ -1,0 +1,87 @@
+Program to merge two linked list in alternate positions
+#include<stdio.h>
+#include<stdlib.h>
+struct node 
+{
+    int data;
+    struct node *next;
+}*h,*h1,*h2,*h3,*t;
+struct node *getnode()
+{
+    struct node *newnode=(struct node *)malloc(sizeof(struct node));
+    newnode->next=NULL;
+    return newnode;
+}
+struct node *llcreate(struct node *h,int dt)
+{
+    struct node *nw=getnode();
+    nw->data=dt;
+    if(h==NULL)
+    {
+        h=nw;
+        return h;
+    }
+    else
+    {
+        t=h;
+        while(t->next!=NULL)
+        {
+            t=t->next;
+        }
+        t->next=nw;
+        return h;
+    }
+}
+struct node *merge(struct node *h1, struct node *h2)
+{
+    struct node *t1=h1;
+    struct node *t2=h2;
+    while(t2!=NULL)
+    {
+        if(t1!=NULL)
+        {
+            h3=llcreate(h3,t1->data);
+            t1=t1->next;
+        }
+        h3=llcreate(h3,t2->data);
+        t2=t2->next;
+    }
+    return h3;
+}
+void display(struct node *head)
+{
+    t=head;
+    while(t!=NULL)
+    {
+        printf("%d ",t->data);
+        t=t->next;
+    }
+}
+void main(void)
+{
+    h1=NULL;
+    h2=NULL;
+    int n1,n2,i,d;
+    printf("Enter the no. of number of terms : ");
+    scanf("%d",&n1);
+    for(i=0;i<n1;i++)
+    {
+        printf("Enter the data %d:",i+1);
+        scanf("%d",&d);
+        h1=llcreate(h1,d);
+    }
+    display(h1);
+    printf("\n");
+    printf("Enter the no. of number of terms : ");
+    scanf("%d",&n2);
+    for(i=0;i<n2;i++)
+    {
+        printf("Enter the data %d:",i+1);
+        scanf("%d",&d);
+        h2=llcreate(h2,d);
+    }
+    display(h2);
+    printf("\n");
+    h3=merge(h1,h2);
+    display(h3);
+}
