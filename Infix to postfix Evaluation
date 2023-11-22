@@ -1,0 +1,157 @@
+Program to evaluate infix to Postfix expression
+#include<stdio.h>
+#include<string.h>
+#include<conio.h>
+ 
+char stack[100];
+int top;
+
+void push(char c)
+{
+	top=top+1;
+	stack[top]=c;
+}
+
+char pop()
+{
+	char temp;
+	if(top<1)//Underflow
+	{
+		printf("\n List is Empty");
+	}
+	else
+	{
+		temp=stack[top];
+		top=top-1;
+		return temp;
+	}
+}
+
+int f(char c)
+{
+	switch(c)
+	{
+		case '+' :
+		case '-' :
+			return(1);
+		case '*' :
+		case '/' :
+			return(3);
+		case '^' :
+			return(6);
+		case '(' :
+			return(9);
+		case ')' :
+			return(0);
+		default :
+			return(7);
+			break;
+	}
+}
+
+int g(char c)
+{
+	switch(c)
+	{
+		case '+' :
+		case '-' :
+			return(2);
+		case '*' :
+		case '/' :
+			return(4);
+		case '^' :
+			return(5);
+		case '(' :
+			return(0);
+		case ')' :
+			return(0);
+		default :
+			return(8);
+			break;
+	}
+}
+
+int r(char c)
+{
+	switch(c)
+	{
+		case '+' :
+		case '-' :
+			return(-1);
+		case '*' :
+		case '/' :
+			return(-1);
+		case '^' :
+			return(-1);
+		case '(' :
+			return(0);
+		case ')' :
+			return(0);
+		default :
+			return(1);
+			break;
+	}
+}
+
+void intopost(char in[])
+{
+	int i,len,rank,inpres,instack;
+	char p[2],c,dummy,tem;
+	char post[100];
+	top=1;
+	stack[top]='(';
+	rank=0;
+	len=strlen(in);
+	strcpy(post,"");
+	for(i=0;i<len;i++)
+	{
+		c=in[i];
+		inpres=f(c);
+		instack=g(stack[top]);
+		if(top<1)
+		{
+			printf("\nInvalid due to stack is empty");
+		}
+		else
+		{
+			while(inpres<instack)
+			{
+				p[0]=pop();
+				p[1]='\0';
+				strcat(post,p);
+				rank=rank+r(p[0]);
+				if(rank<1)
+				{
+					printf("\nInvalid due to rank < 1");
+				}
+				inpres=f(c);
+				instack=g(stack[top]);
+			}
+			if(inpres>instack)
+			{
+				push(c);
+			}
+			if(inpres==instack)
+			{
+				dummy=pop();
+			}
+		}
+	}
+	if((top==0) || (rank==1))
+	{
+		printf("\nPostfix Expression is %s",post);
+	}
+	else
+	{
+		printf("\n Invalid due to rank or top error");
+	}
+}
+
+void main()
+{
+	char in[100];
+	printf("Enter the infix Expression : ");
+	scanf("%s",in);
+	intopost(in);
+	getch();
+}
