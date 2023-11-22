@@ -1,0 +1,89 @@
+Program for finding whether a linked list is palindrome or not
+
+PROGRAM
+#include<stdio.h>
+#include<stdlib.h>
+struct node
+{
+    int data;
+    struct node *next;
+}*head,*temp;
+struct node *getnode()
+{
+    struct node*new=(struct node*)malloc(sizeof(struct node));
+    new->next=NULL;
+    return new;
+}
+struct node *llcreate(struct node*head, int dt)
+{
+    struct node *n=getnode();
+    n->data=dt;
+    if(head==NULL)
+    {
+        head=n;
+        return head;
+    }
+    else
+    {
+        temp=head;
+        while(temp->next!=NULL)
+        {
+            temp=temp->next;
+        }
+        temp->next=n;
+        return head;
+    }
+}
+struct node *reverse(struct node *head)
+{
+    struct node * s[100];//stack which holds the address of struct nodes
+    int item,data,top=0;
+    struct node *nh;
+    temp=head;
+    nh=NULL;
+    while(temp!=NULL)
+    {
+        top=top+1;
+        s[top]=temp;
+        temp=temp->next;
+    }
+    while(top!=0)
+    {
+        item=s[top]->data;
+        top=top-1;
+        nh=llcreate(nh,item);
+    }
+    return nh;
+}
+int main()
+{
+    struct node *head=NULL;
+    struct node *newh,*t,*nt;
+    int n,i,dt;
+    printf("\nENTER THE NUMBER OF NODES : ");
+    scanf("%d",&n);
+    for(i=0;i<n;i++)
+    {
+        printf("Enter the data for node %d :",i+1);
+        scanf("%d",&dt);
+        head=llcreate(head,dt);
+    }
+    t=head;
+    newh=reverse(head);
+    nt=newh;
+    while(t->next!=NULL)
+    {
+        if(t->data!=nt->data)
+        {
+            printf("\nNot a PALINDROME");
+            exit(0);
+        }
+        else
+        {
+            t=t->next;
+            nt=nt->next;
+        }
+    }
+    printf("\nPALINDROME");
+    return 0;
+}
